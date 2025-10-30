@@ -129,6 +129,7 @@ const BookSelector: React.FC<SelectorProps> = ({
     // FIX: Re-added explicit type casting to event handlers to ensure type safety in the no-build-step environment, resolving the white screen issue.
     const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, bookId: string) => {
         if (e.key === 'Enter') {
+            // FIX: Explicitly cast `e.currentTarget` to `HTMLInputElement` to ensure its `value` property is treated as a string.
             onSaveEdit(bookId, (e.currentTarget as HTMLInputElement).value);
         } else if (e.key === 'Escape') {
             onStartEdit(null);
