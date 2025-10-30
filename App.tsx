@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback, useEffect, useRef, Suspense } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { analyzeTextContent, summarizeContent, createQuiz, generateBookDescription, extractBookTitle, analyzeSentiment, extractKeywords, translateToEnglish, translateToArabic, generateScriptFromInfo, generateVideoDescription, generateContentSuggestions, designArticleFromContent, rateContent } from './services/geminiService.ts';
 import { extractTextFromPdf, renderPdfFirstPageToDataUrl } from './services/pdfService.ts';
 import { extractTextFromDocx } from './services/wordService.ts';
@@ -24,7 +24,7 @@ import Carousel from './components/Carousel.tsx';
 import AnalysisResult from './components/AnalysisResult.tsx';
 import InteractiveQuiz from './components/InteractiveQuiz.tsx';
 import DeleteConfirmationModal from './components/DeleteConfirmationModal.tsx';
-import { Footer as LazyFooter } from './components/Footer.tsx';
+import { Footer } from './components/Footer.tsx';
 import AddNoteModal from './components/AddNoteModal.tsx';
 import NotesListModal from './components/NotesListModal.tsx';
 import WebsiteViewer from './components/WebsiteViewer.tsx';
@@ -1028,9 +1028,7 @@ setShowFollowUpActions(true);
                 </div>
 
                 {!currentView && !inAnalysisFlow && (
-                    <Suspense fallback={<div className="flex justify-center p-8"><Spinner/></div>}>
-                         <Carousel items={featuredContent} onItemClick={handleAnalyzeItem} />
-                    </Suspense>
+                    <Carousel items={featuredContent} onItemClick={handleAnalyzeItem} />
                 )}
 
                 {currentView || inAnalysisFlow ? (
@@ -1045,41 +1043,39 @@ setShowFollowUpActions(true);
                             العودة إلى المكتبة الرئيسية
                         </button>
                         
-                        <Suspense fallback={<div className="flex justify-center p-8"><Spinner/></div>}>
-                            {isInQuizMode ? (
-                                <InteractiveQuiz 
-                                    questions={quizQuestions} 
-                                    onComplete={handleQuizComplete}
-                                    bookTitle={analyzedItemTitle || ''}
-                                />
-                            ) : (
-                                <AnalysisResult
-                                    analysis={analysis}
-                                    isLoading={isAnalyzing}
-                                    isSummarizing={isSummarizing}
-                                    analyzedItemName={analyzedItemTitle}
-                                    showFollowUpActions={showFollowUpActions}
-                                    onSummarize={handleSummarize}
-                                    onCreateQuiz={() => handleCreateQuiz()}
-                                    onRequestMoreQuestions={() => handleCreateQuiz(quizQuestionCount + 2)}
-                                    quizResult={quizResult}
-                                    onAnalyzeSentiment={handleAnalyzeSentiment}
-                                    onExtractKeywords={handleExtractKeywords}
-                                    highlightedKeywords={highlightedKeywords}
-                                    onClearHighlights={() => setHighlightedKeywords([])}
-                                    onTranslate={handleTranslate}
-                                    onGenerateSuggestions={handleGenerateSuggestions}
-                                    isGeneratingSuggestions={isGeneratingSuggestions}
-                                    suggestedContent={suggestedContent}
-                                    onGoToLibrary={resetState}
-                                    onDesignArticle={handleDesignArticle}
-                                    isDesigningArticle={isDesigningArticle}
-                                    onRateContent={handleRateContent}
-                                    isRating={isRating}
-                                    isAnalyzedItemUserAdded={isAnalyzedItemUserAdded}
-                                />
-                            )}
-                        </Suspense>
+                        {isInQuizMode ? (
+                            <InteractiveQuiz 
+                                questions={quizQuestions} 
+                                onComplete={handleQuizComplete}
+                                bookTitle={analyzedItemTitle || ''}
+                            />
+                        ) : (
+                            <AnalysisResult
+                                analysis={analysis}
+                                isLoading={isAnalyzing}
+                                isSummarizing={isSummarizing}
+                                analyzedItemName={analyzedItemTitle}
+                                showFollowUpActions={showFollowUpActions}
+                                onSummarize={handleSummarize}
+                                onCreateQuiz={() => handleCreateQuiz()}
+                                onRequestMoreQuestions={() => handleCreateQuiz(quizQuestionCount + 2)}
+                                quizResult={quizResult}
+                                onAnalyzeSentiment={handleAnalyzeSentiment}
+                                onExtractKeywords={handleExtractKeywords}
+                                highlightedKeywords={highlightedKeywords}
+                                onClearHighlights={() => setHighlightedKeywords([])}
+                                onTranslate={handleTranslate}
+                                onGenerateSuggestions={handleGenerateSuggestions}
+                                isGeneratingSuggestions={isGeneratingSuggestions}
+                                suggestedContent={suggestedContent}
+                                onGoToLibrary={resetState}
+                                onDesignArticle={handleDesignArticle}
+                                isDesigningArticle={isDesigningArticle}
+                                onRateContent={handleRateContent}
+                                isRating={isRating}
+                                isAnalyzedItemUserAdded={isAnalyzedItemUserAdded}
+                            />
+                        )}
                     </div>
                 ) : (
                     <>
@@ -1151,117 +1147,99 @@ setShowFollowUpActions(true);
                             />
                         )}
                          {activeTab === 'videos' && (
-                             <Suspense fallback={<div className="flex justify-center p-8"><Spinner/></div>}>
-                                <VideoSelector
-                                    items={videos}
-                                    onAnalyze={handleAnalyzeItem}
-                                    isAnalyzing={isAnalyzing}
-                                    analyzingItemId={analyzingItemId}
-                                    onOpenAddModal={() => handleOpenAddModal('video')}
-                                    onOpenNotesListModal={() => setIsNotesListModalOpen(true)}
-                                    editingId={editingId}
-                                    onStartEdit={setEditingId}
-                                    onSaveEdit={handleSaveEdit}
-                                    editingDescId={editingDescId}
-                                    onStartDescEdit={setEditingDescId}
-                                    onSaveDescEdit={handleSaveDescEdit}
-                                    onDelete={setItemToDelete}
-                                    onRate={handleRateItem}
-                                    initialVideoIds={initialVideoIds}
-                                    onViewScript={setScriptToView}
-                                    onGenerateScript={handleGenerateScript}
-                                    generatingScriptId={generatingScriptId}
-                                />
-                            </Suspense>
+                            <VideoSelector
+                                items={videos}
+                                onAnalyze={handleAnalyzeItem}
+                                isAnalyzing={isAnalyzing}
+                                analyzingItemId={analyzingItemId}
+                                onOpenAddModal={() => handleOpenAddModal('video')}
+                                onOpenNotesListModal={() => setIsNotesListModalOpen(true)}
+                                editingId={editingId}
+                                onStartEdit={setEditingId}
+                                onSaveEdit={handleSaveEdit}
+                                editingDescId={editingDescId}
+                                onStartDescEdit={setEditingDescId}
+                                onSaveDescEdit={handleSaveDescEdit}
+                                onDelete={setItemToDelete}
+                                onRate={handleRateItem}
+                                initialVideoIds={initialVideoIds}
+                                onViewScript={setScriptToView}
+                                onGenerateScript={handleGenerateScript}
+                                generatingScriptId={generatingScriptId}
+                            />
                         )}
                         {activeTab === 'audios' && (
-                            <Suspense fallback={<div className="flex justify-center p-8"><Spinner/></div>}>
-                                <AudioSelector 
-                                    items={audios}
-                                    onAnalyze={handleAnalyzeItem}
-                                    isAnalyzing={isAnalyzing}
-                                    analyzingItemId={analyzingItemId}
-                                    onOpenAddModal={() => handleOpenAddModal('audio')}
-                                    onOpenNotesListModal={() => setIsNotesListModalOpen(true)}
-                                    editingId={editingId} onStartEdit={setEditingId} onSaveEdit={handleSaveEdit}
-                                    editingDescId={editingDescId} onStartDescEdit={setEditingDescId} onSaveDescEdit={handleSaveDescEdit}
-                                    onDelete={setItemToDelete} onRate={handleRateItem}
-                                />
-                            </Suspense>
+                            <AudioSelector 
+                                items={audios}
+                                onAnalyze={handleAnalyzeItem}
+                                isAnalyzing={isAnalyzing}
+                                analyzingItemId={analyzingItemId}
+                                onOpenAddModal={() => handleOpenAddModal('audio')}
+                                onOpenNotesListModal={() => setIsNotesListModalOpen(true)}
+                                editingId={editingId} onStartEdit={setEditingId} onSaveEdit={handleSaveEdit}
+                                editingDescId={editingDescId} onStartDescEdit={setEditingDescId} onSaveDescEdit={handleSaveDescEdit}
+                                onDelete={setItemToDelete} onRate={handleRateItem}
+                            />
                         )}
                         {activeTab === 'images' && (
-                             <Suspense fallback={<div className="flex justify-center p-8"><Spinner/></div>}>
-                                <ImageSelector 
-                                    items={images}
-                                    onAnalyze={handleAnalyzeItem}
-                                    isAnalyzing={isAnalyzing}
-                                    analyzingItemId={analyzingItemId}
-                                    onOpenAddModal={() => handleOpenAddModal('image')}
-                                    onOpenNotesListModal={() => setIsNotesListModalOpen(true)}
-                                    editingId={editingId} onStartEdit={setEditingId} onSaveEdit={handleSaveEdit}
-                                    editingDescId={editingDescId} onStartDescEdit={setEditingDescId} onSaveDescEdit={handleSaveDescEdit}
-                                    onDelete={setItemToDelete} onRate={handleRateItem}
-                                />
-                             </Suspense>
+                            <ImageSelector 
+                                items={images}
+                                onAnalyze={handleAnalyzeItem}
+                                isAnalyzing={isAnalyzing}
+                                analyzingItemId={analyzingItemId}
+                                onOpenAddModal={() => handleOpenAddModal('image')}
+                                onOpenNotesListModal={() => setIsNotesListModalOpen(true)}
+                                editingId={editingId} onStartEdit={setEditingId} onSaveEdit={handleSaveEdit}
+                                editingDescId={editingDescId} onStartDescEdit={setEditingDescId} onSaveDescEdit={handleSaveDescEdit}
+                                onDelete={setItemToDelete} onRate={handleRateItem}
+                            />
                         )}
                         {activeTab === 'websites' && (
-                             <Suspense fallback={<div className="flex justify-center p-8"><Spinner/></div>}>
-                                <WebsiteViewer />
-                             </Suspense>
+                            <WebsiteViewer />
                         )}
                         {activeTab === 'deployment' && (
-                             <Suspense fallback={<div className="flex justify-center p-8"><Spinner/></div>}>
-                                <SupabaseReadiness />
-                             </Suspense>
+                            <SupabaseReadiness />
                         )}
                         {activeTab === 'about' && (
-                             <Suspense fallback={<div className="flex justify-center p-8"><Spinner/></div>}>
-                                <AboutUs />
-                             </Suspense>
+                            <AboutUs />
                         )}
                     </>
                 )}
             </main>
 
-            <Suspense fallback={null}>
-                <ApiKeyButton onOpen={() => setIsApiKeyModalOpen(true)} />
-            </Suspense>
+            <ApiKeyButton onOpen={() => setIsApiKeyModalOpen(true)} />
 
-            <Suspense fallback={null}>
-                {isApiKeyModalOpen && (
-                    <ApiKeyModal 
-                        onSave={handleSaveApiKey}
-                        onClose={() => setIsApiKeyModalOpen(false)} 
-                    />
-                )}
-                {isAddModalOpen && (
-                    <AddMediaModal 
-                        mediaType={mediaType}
-                        onClose={() => setIsAddModalOpen(false)}
-                        onAdd={handleAddMedia}
-                    />
-                )}
-                {itemToDelete && (
-                    <DeleteConfirmationModal
-                        bookTitle={itemToDelete.title}
-                        onConfirm={handleDeleteItem}
-                        onCancel={() => setItemToDelete(null)}
-                    />
-                )}
-                {isAddNoteModalOpen && (
-                    <AddNoteModal onClose={() => setIsAddNoteModalOpen(false)} onSave={handleAddNote} />
-                )}
-                {isNotesListModalOpen && (
-                    <NotesListModal notes={notes} onClose={() => setIsNotesListModalOpen(false)} onDelete={handleDeleteNote} />
-                )}
-                {scriptToView && (
-                    <ScriptViewerModal video={scriptToView} onClose={() => setScriptToView(null)} />
-                )}
-            </Suspense>
+            {isApiKeyModalOpen && (
+                <ApiKeyModal 
+                    onSave={handleSaveApiKey}
+                    onClose={() => setIsApiKeyModalOpen(false)} 
+                />
+            )}
+            {isAddModalOpen && (
+                <AddMediaModal 
+                    mediaType={mediaType}
+                    onClose={() => setIsAddModalOpen(false)}
+                    onAdd={handleAddMedia}
+                />
+            )}
+            {itemToDelete && (
+                <DeleteConfirmationModal
+                    bookTitle={itemToDelete.title}
+                    onConfirm={handleDeleteItem}
+                    onCancel={() => setItemToDelete(null)}
+                />
+            )}
+            {isAddNoteModalOpen && (
+                <AddNoteModal onClose={() => setIsAddNoteModalOpen(false)} onSave={handleAddNote} />
+            )}
+            {isNotesListModalOpen && (
+                <NotesListModal notes={notes} onClose={() => setIsNotesListModalOpen(false)} onDelete={handleDeleteNote} />
+            )}
+            {scriptToView && (
+                <ScriptViewerModal video={scriptToView} onClose={() => setScriptToView(null)} />
+            )}
 
-            <Suspense fallback={null}>
-                 {!currentView && !inAnalysisFlow && <LazyFooter />}
-            </Suspense>
+            {!currentView && !inAnalysisFlow && <Footer />}
         </div>
     );
 };
