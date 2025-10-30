@@ -52,8 +52,8 @@ export const researches: Book[] = [
         title: 'بحث في أصول الفقه',
         description: 'بحث معمق يستعرض المبادئ الأساسية في علم أصول الفقه وتطبيقاتها المعاصرة.',
         imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=400&auto=format&fit=crop',
-        contentPath: 'public/books/comprehensive-entrepreneurship-guide.txt',
-        downloadUrl: 'public/books/comprehensive-entrepreneurship-guide.txt',
+        contentPath: 'books/comprehensive-entrepreneurship-guide.txt',
+        downloadUrl: 'books/comprehensive-entrepreneurship-guide.txt',
         isUserAdded: false,
         fileName: 'بحث في أصول الفقه.txt',
         rating: 0,
@@ -68,8 +68,8 @@ export const periodicals: Book[] = [
         title: 'دورية الدراسات الإسلامية - المجلد الأول',
         description: 'مجموعة من المقالات والأبحاث المحكمة في مختلف مجالات الدراسات الإسلامية.',
         imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=400&auto=format&fit=crop',
-        contentPath: 'public/books/solar-system-journey.txt',
-        downloadUrl: 'public/books/solar-system-journey.txt',
+        contentPath: 'books/solar-system-journey.txt',
+        downloadUrl: 'books/solar-system-journey.txt',
         isUserAdded: false,
         fileName: 'دورية الدراسات الإسلامية.txt',
         rating: 0,
@@ -150,7 +150,7 @@ export const videos: Video[] = [
 
 يعني مش مجرد كتابين جنب بعض، لأ هما أشبه ببرنامج متكامل من خطوتين. طيب، لو تخيلنا بقى إن المنهج المتكامل ده اللي بيجمع بين الاثنين، اطبق فعلًا، إيه النتيجة الكبيرة اللي ممكن نوصلها؟ إيه الهدف الأكبر من ورا الدمج ده؟
 
-بص، الهدف الأكبر والأسمى هو إننا نخرج أو نثبت جيل من طلبة العلم والدعاة والمربين על منهج علمي وعملي متكامل، منهج بيرسخهم في فهم الدين الصح القائم على الدليل. والمنهج المتكامل ده بيحقق كذا حاجة مهمة: أول حاجة، تحقيق فرض العين من العلم ونبذ التقليد، يعني التأكيد על إن تعلم أساسيات الدين وفهم دليله ده واجب על كل مسلم قادر، مش بس المتخصصين، حتى لو واحد دكتور أو مهندس مطلوب منه يتعلم اللي يقدر عليه من دينه. الهدف إن ثقافة الاتباع تسود والتقليد يرجع لوضعه كاستثناء للضرورة.
+بص، الهدف الأكبر والأسمى هو إننا نخرج أو نثبت جيل من طلبة العلم والدعاة والمربين על منهج علمي وعملي متكامل، منهج بيرسخهم في فهم الدين الصح القائم على الدليل. والمنهج المتكامل ده بيحقق كذا حاجة مهمة: أول حاجة، تحقيق فرض العين من العلم ونبذ التقليد، يعني التأكيد על إن تعلم أساسيات الدين وفهم دليله ده واجب על כל مسلم قادر، مش بس المتخصصين، حتى لو واحد دكتور أو مهندس مطلوب منه يتعلم اللي يقدر عليه من دينه. الهدف إن ثقافة الاتباع تسود والتقليد يرجع لوضعه كاستثناء للضرورة.
 
 يعني العلم للجميع، كل واحد על قد طاقته.
 
