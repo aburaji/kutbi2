@@ -128,7 +128,7 @@ const BookSelector: React.FC<SelectorProps> = ({
 
     const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, bookId: string) => {
         if (e.key === 'Enter') {
-            // FIX: Removed explicit cast; type inference from the event object is sufficient.
+            // FIX: Removed explicit type casting on event handlers.
             onSaveEdit(bookId, e.currentTarget.value);
         } else if (e.key === 'Escape') {
             onStartEdit(null);
@@ -138,7 +138,7 @@ const BookSelector: React.FC<SelectorProps> = ({
     const handleDescriptionKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>, bookId: string) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            // FIX: Removed explicit cast; type inference from the event object is sufficient.
+            // FIX: Removed explicit type casting on event handlers.
             onSaveDescEdit(bookId, e.currentTarget.value);
         } else if (e.key === 'Escape') {
             onStartDescEdit(null);
