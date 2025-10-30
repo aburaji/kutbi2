@@ -12,27 +12,36 @@ const Carousel: React.FC<CarouselProps> = ({ items, onItemClick }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const goToPrevious = useCallback(() => {
+        if (items.length === 0) return;
         const isFirstSlide = currentIndex === 0;
         const newIndex = isFirstSlide ? items.length - 1 : currentIndex - 1;
         setCurrentIndex(newIndex);
     }, [currentIndex, items.length]);
 
     const goToNext = useCallback(() => {
+        if (items.length === 0) return;
         const isLastSlide = currentIndex === items.length - 1;
         const newIndex = isLastSlide ? 0 : currentIndex + 1;
         setCurrentIndex(newIndex);
     }, [currentIndex, items.length]);
 
     useEffect(() => {
-        const slideInterval = setInterval(goToNext, 5000); // Auto-slide every 5 seconds
-        return () => clearInterval(slideInterval);
-    }, [goToNext]);
+        if (items.length > 1) {
+            const slideInterval = setInterval(goToNext, 5000); // Auto-slide every 5 seconds
+            return () => clearInterval(slideInterval);
+        }
+    }, [goToNext, items.length]);
 
     if (!items || items.length === 0) {
         return null;
     }
     
     const currentItem = items[currentIndex];
+    // This check prevents an error if items array is valid but currentIndex is out of bounds somehow.
+    if (!currentItem) {
+        return null;
+    }
+
     const isBook = 'imageUrl' in currentItem;
     const imageUrl = isBook ? (currentItem as Book).imageUrl : (currentItem as Video).thumbnailUrl;
 
@@ -68,26 +77,30 @@ const Carousel: React.FC<CarouselProps> = ({ items, onItemClick }) => {
             </div>
             
             {/* Navigation Buttons */}
-            <button onClick={goToPrevious} className="absolute top-1/2 -translate-y-1/2 left-4 z-30 bg-black bg-opacity-30 text-white rounded-full p-2 hover:bg-opacity-50 transition-opacity opacity-0 group-hover:opacity-100" aria-label="السابق">
-                {/* FIX: Changed numeric strokeWidth property to a string for consistency. */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
-            </button>
-            <button onClick={goToNext} className="absolute top-1/2 -translate-y-1/2 right-4 z-30 bg-black bg-opacity-30 text-white rounded-full p-2 hover:bg-opacity-50 transition-opacity opacity-0 group-hover:opacity-100" aria-label="التالي">
-                {/* FIX: Changed numeric strokeWidth property to a string for consistency. */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
-            </button>
+            {items.length > 1 && (
+                <>
+                    <button onClick={goToPrevious} className="absolute top-1/2 -translate-y-1/2 left-4 z-30 bg-black bg-opacity-30 text-white rounded-full p-2 hover:bg-opacity-50 transition-opacity opacity-0 group-hover:opacity-100" aria-label="السابق">
+                        {/* FIX: Changed numeric strokeWidth property to a string for consistency. */}
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+                    </button>
+                    <button onClick={goToNext} className="absolute top-1/2 -translate-y-1/2 right-4 z-30 bg-black bg-opacity-30 text-white rounded-full p-2 hover:bg-opacity-50 transition-opacity opacity-0 group-hover:opacity-100" aria-label="التالي">
+                        {/* FIX: Changed numeric strokeWidth property to a string for consistency. */}
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+                    </button>
 
-            {/* Dots */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex space-x-2">
-                {items.map((_, index) => (
-                    <button 
-                        key={index} 
-                        onClick={() => setCurrentIndex(index)}
-                        className={`w-2 h-2 rounded-full transition-colors ${currentIndex === index ? 'bg-white' : 'bg-white bg-opacity-40 hover:bg-opacity-70'}`}
-                        aria-label={`الانتقال إلى الشريحة ${index + 1}`}
-                    ></button>
-                ))}
-            </div>
+                    {/* Dots */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex space-x-2">
+                        {items.map((_, index) => (
+                            <button 
+                                key={index} 
+                                onClick={() => setCurrentIndex(index)}
+                                className={`w-2 h-2 rounded-full transition-colors ${currentIndex === index ? 'bg-white' : 'bg-white bg-opacity-40 hover:bg-opacity-70'}`}
+                                aria-label={`الانتقال إلى الشريحة ${index + 1}`}
+                            ></button>
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 };

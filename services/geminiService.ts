@@ -6,11 +6,11 @@ let ai: GoogleGenAI | null = null;
 
 /**
  * Lazily initializes and returns the GoogleGenAI instance.
- * This function is called by all other exported functions in this service,
- * ensuring the AI client is only created when first needed.
- * It exclusively uses a key from localStorage, as expected in this client-side app.
+ * This function is the single point of entry for accessing the AI client,
+ * ensuring it's only created once when first needed.
+ * It exclusively uses a key from localStorage, as required for a client-side app.
  * @returns The initialized GoogleGenAI instance.
- * @throws An error if the API key is missing or initialization fails.
+ * @throws An error if the API key is missing, allowing the UI to react.
  */
 const getAiInstance = (): GoogleGenAI => {
     // If already initialized, return the existing instance.
@@ -20,34 +20,45 @@ const getAiInstance = (): GoogleGenAI => {
 
     let apiKey: string | null = null;
     
-    // Get the API key from localStorage. This is the only supported method in this client-side setup.
+    // In a browser environment, the only secure way for a user to provide a key
+    // is through a non-persistent mechanism like localStorage.
     try {
         apiKey = localStorage.getItem('gemini_api_key');
     } catch (e) {
-         console.warn("Could not access localStorage", e);
+         console.warn("Could not access localStorage. API features will be disabled.", e);
+         throw new Error("API_KEY_MISSING");
     }
 
-    // If no key is found, throw a specific error for the UI to handle.
+    // If no key is found, throw a specific error for the UI to handle gracefully.
     if (!apiKey) {
         throw new Error("API_KEY_MISSING");
     }
 
-    // Try to create the GoogleGenAI instance.
+    // Attempt to create the GoogleGenAI instance.
     try {
         ai = new GoogleGenAI({ apiKey });
         return ai;
     } catch (e) {
-        console.error("Could not initialize GoogleGenAI. AI features will be disabled.", e);
+        console.error("Could not initialize GoogleGenAI. This might be due to an invalid API key.", e);
+        // Invalidate the potentially bad key to avoid loops
+        localStorage.removeItem('gemini_api_key');
         throw new Error("فشل في تهيئة Gemini API. يرجى التحقق من صحة مفتاح API الخاص بك.");
     }
 };
 
 
+/**
+ * A robust wrapper for all Gemini API calls that includes error handling and retry logic.
+ * This centralization makes the app more stable and easier to debug.
+ * @param prompt The prompt to send to the model.
+ * @param config Optional configuration for the generation request.
+ * @returns The processed response from the model (string or JSON object).
+ */
 const callGeminiWithRetry = async (prompt: string, config: any = {}): Promise<any> => {
-    // This will initialize the 'ai' instance on the very first call.
     const aiInstance = getAiInstance();
     const model = 'gemini-2.5-flash';
     let attempts = 3;
+
     while (attempts > 0) {
         try {
             const response = await aiInstance.models.generateContent({
@@ -62,6 +73,7 @@ const callGeminiWithRetry = async (prompt: string, config: any = {}): Promise<an
             }
 
             if (config.responseMimeType === "application/json") {
+                // The API can sometimes wrap the JSON in markdown backticks.
                 const cleanedJsonString = textResponse.replace(/^```json\s*|```\s*$/g, '').trim();
                 if (!cleanedJsonString) {
                     throw new Error("أرجع النموذج استجابة JSON فارغة.");
@@ -79,13 +91,18 @@ const callGeminiWithRetry = async (prompt: string, config: any = {}): Promise<an
             console.error(`Gemini API error (attempt ${3 - attempts}):`, error);
             if (attempts === 0) {
                  if (error instanceof Error) {
-                    // Re-throw our specific initialization or response errors to be displayed directly in the UI.
-                    if (error.message.includes("Gemini API") || error.message.includes("استجابة فارغة") || error.message.includes("JSON") || error.message === "API_KEY_MISSING") {
+                    // Re-throw specific, user-facing errors.
+                    if (error.message.includes("API key not valid") || error.message.includes("API_KEY_MISSING")) {
+                         throw new Error("API_KEY_MISSING");
+                    }
+                    if (error.message.includes("Gemini API") || error.message.includes("استجابة فارغة") || error.message.includes("JSON")) {
                         throw error;
                     }
                 }
+                // Generic fallback error.
                 throw new Error("فشل الاتصال بـ Gemini API بعد عدة محاولات.");
             }
+            // Wait before retrying.
             await new Promise(res => setTimeout(res, 1000));
         }
     }
@@ -113,7 +130,6 @@ export const analyzeTextContent = async (content: string): Promise<{ analysis: s
         ---
     `;
     
-    // We can run these in parallel to speed up the process
     const analysisPromise = callGeminiWithRetry(analysisPrompt);
     const categoriesPromise = categorizeContent(content);
 
@@ -152,18 +168,18 @@ export const categorizeContent = async (content: string): Promise<string[]> => {
         if (Array.isArray(result) && result.every(item => typeof item === 'string')) {
             return result as string[];
         } else {
-            console.error("Invalid categories format received from API:", result);
-            return []; // Return empty array on failure instead of throwing
+            console.warn("Invalid categories format received from API:", result);
+            return [];
         }
     } catch (error) {
         console.error("Failed to generate categories:", error);
-        return []; // Return empty on error
+        return []; // Return empty on error, this is a non-critical feature.
     }
 };
 
 
 export async function* summarizeContent(content: string): AsyncGenerator<string> {
-    const aiInstance = getAiInstance();
+    const aiInstance = getAiInstance(); // Will throw if key is missing.
     if (!content) {
         yield "لا يوجد محتوى لتلخيصه.";
         return;
@@ -197,11 +213,8 @@ export async function* summarizeContent(content: string): AsyncGenerator<string>
         }
     } catch (error) {
         console.error(`Gemini API streaming error:`, error);
-        if (error instanceof Error) {
-            if (error.message.includes("Gemini API") || error.message === "API_KEY_MISSING") {
-                throw error;
-            }
-            throw new Error(`فشل الاتصال بـ Gemini API أثناء التلخيص: ${error.message}`);
+        if (error instanceof Error && error.message.includes("API key not valid")) {
+            throw new Error("API_KEY_MISSING");
         }
         throw new Error("فشل الاتصال بـ Gemini API أثناء التلخيص.");
     }
