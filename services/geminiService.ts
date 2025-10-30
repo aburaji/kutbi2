@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { QuizQuestion, SentimentResult } from '../types';
+import { QuizQuestion, SentimentResult } from '../types.ts';
 
 // Singleton instance, lazily initialized to prevent app crash on load.
 let ai: GoogleGenAI | null = null;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Book } from '../types';
-import { renderPdfFirstPageToDataUrl } from '../services/pdfService';
-import StarRating from './StarRating';
+import { Book } from '../types.ts';
+import { renderPdfFirstPageToDataUrl } from '../services/pdfService.ts';
+import StarRating from './StarRating.tsx';
 
 
 // A more visually engaging BookCover component for the grid view
@@ -171,7 +171,7 @@ const BookSelector: React.FC<SelectorProps> = ({
                         <span>مذكراتي</span>
                     </button>
                     <button onClick={onOpenAddModal} className="flex items-center gap-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm shadow hover:shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110 2h3V6a1 1 0 011-1z" clipRule="evenodd" /></svg>
                         <span>{addButtonText}</span>
                     </button>
                 </div>
@@ -255,14 +255,16 @@ const BookSelector: React.FC<SelectorProps> = ({
                                 
                                 <div className="p-5 flex flex-col flex-grow">
                                      {editingId === book.id ? (
-                                        <input type="text" defaultValue={book.title} onKeyDown={(e) => handleTitleKeyDown(e, book.id)} onBlur={(e) => onSaveEdit(book.id, (e.currentTarget as HTMLInputElement).value)} className="font-bold text-lg text-slate-800 bg-white border border-blue-400 rounded px-2 py-1 w-full mb-2" autoFocus />
+                                        // FIX: Removed explicit cast on e.currentTarget.value. The event type provides enough information for TypeScript to infer the correct type.
+                                        <input type="text" defaultValue={book.title} onKeyDown={(e) => handleTitleKeyDown(e, book.id)} onBlur={(e) => onSaveEdit(book.id, e.currentTarget.value)} className="font-bold text-lg text-slate-800 bg-white border border-blue-400 rounded px-2 py-1 w-full mb-2" autoFocus />
                                     ) : (
                                         <h3 className="font-bold text-lg text-slate-800 group-hover:text-blue-600 transition-colors duration-300 mb-2 truncate" title={book.title}>{book.title}</h3>
                                     )}
         
                                     <div className="flex-grow min-h-[60px]">
                                          {editingDescId === book.id ? (
-                                            <textarea defaultValue={book.description} onKeyDown={(e) => handleDescriptionKeyDown(e, book.id)} onBlur={(e) => onSaveDescEdit(book.id, (e.currentTarget as HTMLTextAreaElement).value)} className="text-sm text-slate-600 bg-white border border-blue-400 rounded px-2 py-1 w-full" autoFocus rows={4} />
+                                            // FIX: Removed explicit cast on e.currentTarget.value. The event type provides enough information for TypeScript to infer the correct type.
+                                            <textarea defaultValue={book.description} onKeyDown={(e) => handleDescriptionKeyDown(e, book.id)} onBlur={(e) => onSaveDescEdit(book.id, e.currentTarget.value)} className="text-sm text-slate-600 bg-white border border-blue-400 rounded px-2 py-1 w-full" autoFocus rows={4} />
                                         ) : (
                                             <div className="flex items-start gap-1">
                                                 <p className="text-sm text-slate-600 line-clamp-2 flex-grow">{book.description}</p>

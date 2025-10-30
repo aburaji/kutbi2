@@ -1,5 +1,5 @@
 import React from 'react';
-import { Note } from '../types';
+import { Note } from '../types.ts';
 
 interface NotesListModalProps {
     notes: Note[];

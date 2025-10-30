@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Spinner from './Spinner';
-import { QuizResult, Book, Video } from '../types';
+import Spinner from './Spinner.tsx';
+import { QuizResult, Book, Video } from '../types.ts';
 
 interface AnalysisResultProps {
     analysis: string;

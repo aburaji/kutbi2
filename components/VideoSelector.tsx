@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Video } from '../types';
-import StarRating from './StarRating';
+import { Video } from '../types.ts';
+import StarRating from './StarRating.tsx';
 
 const MediaCover: React.FC<{ item: Video; onZoomRequest: (imageUrl: string) => void; }> = ({ item, onZoomRequest }) => {
     return (
@@ -76,7 +76,7 @@ const VideoSelector: React.FC<SelectorProps> = ({
                         <span>مذكراتي</span>
                     </button>
                     <button onClick={onOpenAddModal} className="flex items-center gap-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm shadow hover:shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110 2h3V6a1 1 0 011-1z" clipRule="evenodd" /></svg>
                         <span>إضافة فيديو</span>
                     </button>
                 </div>

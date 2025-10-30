@@ -1,44 +1,45 @@
 
 
 
+
 import React, { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react';
-import { analyzeTextContent, summarizeContent, createQuiz, generateBookDescription, extractBookTitle, analyzeSentiment, extractKeywords, translateToEnglish, translateToArabic, generateScriptFromInfo, generateVideoDescription, generateContentSuggestions, designArticleFromContent, rateContent } from './services/geminiService';
-import { extractTextFromPdf, renderPdfFirstPageToDataUrl } from './services/pdfService';
-import { extractTextFromDocx } from './services/wordService';
-import { extractTextFromEpub } from './services/epubService';
-import { createCoverFromText } from './services/coverService';
-import Header from './components/Header';
-import ErrorDisplay from './components/ErrorDisplay';
-import BookSelector from './components/BookSelector';
-import { books as initialBooks, researches as initialResearches, periodicals as initialPeriodicals, videos as initialVideos } from './data/books';
-import { Book, QuizQuestion, QuizResult, SentimentResult, Note, Video, Audio, Image } from './types';
+import { analyzeTextContent, summarizeContent, createQuiz, generateBookDescription, extractBookTitle, analyzeSentiment, extractKeywords, translateToEnglish, translateToArabic, generateScriptFromInfo, generateVideoDescription, generateContentSuggestions, designArticleFromContent, rateContent } from './services/geminiService.ts';
+import { extractTextFromPdf, renderPdfFirstPageToDataUrl } from './services/pdfService.ts';
+import { extractTextFromDocx } from './services/wordService.ts';
+import { extractTextFromEpub } from './services/epubService.ts';
+import { createCoverFromText } from './services/coverService.ts';
+import Header from './components/Header.tsx';
+import ErrorDisplay from './components/ErrorDisplay.tsx';
+import BookSelector from './components/BookSelector.tsx';
+import { books as initialBooks, researches as initialResearches, periodicals as initialPeriodicals, videos as initialVideos } from './data/books.ts';
+import { Book, QuizQuestion, QuizResult, SentimentResult, Note, Video, Audio, Image } from './types.ts';
 // FIX: The getDbService function is now correctly imported from dbService.
-import { getDbService } from './services/dbService';
-import Spinner from './components/Spinner';
+import { getDbService } from './services/dbService.ts';
+import Spinner from './components/Spinner.tsx';
 
 // New Components
-import Tabs from './components/Tabs';
+import Tabs from './components/Tabs.tsx';
 // FIX: The component is loaded conditionally in a tab. Using lazy loading resolves the module loading issue and improves initial load performance.
-const VideoSelector = lazy(() => import('./components/VideoSelector'));
+const VideoSelector = lazy(() => import('./components/VideoSelector.tsx'));
 // FIX: The component is loaded conditionally in a tab. Using lazy loading improves initial load performance.
-const AudioSelector = lazy(() => import('./components/AudioSelector'));
+const AudioSelector = lazy(() => import('./components/AudioSelector.tsx'));
 // FIX: Changed to a lazy import to match other components and resolve potential module loading issues.
-const ImageSelector = lazy(() => import('./components/ImageSelector'));
-import AddMediaModal, { MediaType } from './components/AddBookModal';
-import Carousel from './components/Carousel';
+const ImageSelector = lazy(() => import('./components/ImageSelector.tsx'));
+import AddMediaModal, { MediaType } from './components/AddBookModal.tsx';
+import Carousel from './components/Carousel.tsx';
 
 
-const AnalysisResult = lazy(() => import('./components/AnalysisResult'));
-const InteractiveQuiz = lazy(() => import('./components/InteractiveQuiz'));
-const DeleteConfirmationModal = lazy(() => import('./components/DeleteConfirmationModal'));
-const LazyFooter = lazy(() => import('./components/Footer').then(module => ({ default: module.Footer })));
-const AddNoteModal = lazy(() => import('./components/AddNoteModal'));
-const NotesListModal = lazy(() => import('./components/NotesListModal'));
-const WebsiteViewer = lazy(() => import('./components/WebsiteViewer'));
-const ScriptViewerModal = lazy(() => import('./components/ScriptViewerModal'));
-const AboutUs = lazy(() => import('./components/AboutUs'));
-const SupabaseReadiness = lazy(() => import('./components/SupabaseReadiness'));
-const ApiKeyModal = lazy(() => import('./components/ApiKeyModal'));
+const AnalysisResult = lazy(() => import('./components/AnalysisResult.tsx'));
+const InteractiveQuiz = lazy(() => import('./components/InteractiveQuiz.tsx'));
+const DeleteConfirmationModal = lazy(() => import('./components/DeleteConfirmationModal.tsx'));
+const LazyFooter = lazy(() => import('./components/Footer.tsx').then(module => ({ default: module.Footer })));
+const AddNoteModal = lazy(() => import('./components/AddNoteModal.tsx'));
+const NotesListModal = lazy(() => import('./components/NotesListModal.tsx'));
+const WebsiteViewer = lazy(() => import('./components/WebsiteViewer.tsx'));
+const ScriptViewerModal = lazy(() => import('./components/ScriptViewerModal.tsx'));
+const AboutUs = lazy(() => import('./components/AboutUs.tsx'));
+const SupabaseReadiness = lazy(() => import('./components/SupabaseReadiness.tsx'));
+const ApiKeyModal = lazy(() => import('./components/ApiKeyModal.tsx'));
 
 
 /**

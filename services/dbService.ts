@@ -1,4 +1,4 @@
-import { Book, Note, Video, Audio, Image } from '../types';
+import { Book, Note, Video, Audio, Image } from '../types.ts';
 
 const DB_NAME = 'BookLibraryDB';
 const DB_VERSION = 4; // Incremented version
