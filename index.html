@@ -41,5 +41,12 @@
   <body>
     <div id="root"></div>
     <script type="text/babel" data-type="module" data-presets="react,typescript" data-src="index.tsx"></script>
+    
+    <div id="output"></div>
+    <!-- Your custom script here -->
+    <script type="text/babel">
+    const getMessage = () => "Hello World";
+    document.getElementById('output').innerHTML = getMessage();
+    </script>
   </body>
 </html>
