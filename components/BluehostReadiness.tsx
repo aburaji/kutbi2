@@ -29,7 +29,7 @@ const WarningCheckItem: React.FC<{ title: string; description: string; }> = ({ t
 );
 
 
-const SupabaseReadiness: React.FC = () => {
+const BluehostReadiness: React.FC = () => {
     return (
         <div className="p-6 bg-white rounded-2xl shadow-lg border border-slate-200">
             <div className="text-center mb-8">
@@ -79,4 +79,4 @@ const SupabaseReadiness: React.FC = () => {
     );
 };
 
-export default SupabaseReadiness;
+export default BluehostReadiness;
