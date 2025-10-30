@@ -1,10 +1,5 @@
 
-
-
-
-
-
-import React, { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react';
+import React, { useState, useCallback, useEffect, useRef, Suspense } from 'react';
 import { analyzeTextContent, summarizeContent, createQuiz, generateBookDescription, extractBookTitle, analyzeSentiment, extractKeywords, translateToEnglish, translateToArabic, generateScriptFromInfo, generateVideoDescription, generateContentSuggestions, designArticleFromContent, rateContent } from './services/geminiService.ts';
 import { extractTextFromPdf, renderPdfFirstPageToDataUrl } from './services/pdfService.ts';
 import { extractTextFromDocx } from './services/wordService.ts';
@@ -15,34 +10,29 @@ import ErrorDisplay from './components/ErrorDisplay.tsx';
 import BookSelector from './components/BookSelector.tsx';
 import { books as initialBooks, researches as initialResearches, periodicals as initialPeriodicals, videos as initialVideos } from './data/books.ts';
 import { Book, QuizQuestion, QuizResult, SentimentResult, Note, Video, Audio, Image } from './types.ts';
-// FIX: The getDbService function is now correctly imported from dbService.
 import { getDbService } from './services/dbService.ts';
 import Spinner from './components/Spinner.tsx';
 
 // New Components
 import Tabs from './components/Tabs.tsx';
-// FIX: The component is loaded conditionally in a tab. Using lazy loading resolves the module loading issue and improves initial load performance.
-const VideoSelector = lazy(() => import('./components/VideoSelector.tsx'));
-// FIX: The component is loaded conditionally in a tab. Using lazy loading improves initial load performance.
-const AudioSelector = lazy(() => import('./components/AudioSelector.tsx'));
-// FIX: Changed to a lazy import to match other components and resolve potential module loading issues.
-const ImageSelector = lazy(() => import('./components/ImageSelector.tsx'));
+// FIX: Reverted from lazy loading to static imports. Lazy loading can be unreliable in no-build-step environments and was likely causing the white screen issue. Direct imports are more robust.
+import VideoSelector from './components/VideoSelector.tsx';
+import AudioSelector from './components/AudioSelector.tsx';
+import ImageSelector from './components/ImageSelector.tsx';
 import AddMediaModal, { MediaType } from './components/AddBookModal.tsx';
 import Carousel from './components/Carousel.tsx';
-
-
-const AnalysisResult = lazy(() => import('./components/AnalysisResult.tsx'));
-const InteractiveQuiz = lazy(() => import('./components/InteractiveQuiz.tsx'));
-const DeleteConfirmationModal = lazy(() => import('./components/DeleteConfirmationModal.tsx'));
-const LazyFooter = lazy(() => import('./components/Footer.tsx').then(module => ({ default: module.Footer })));
-const AddNoteModal = lazy(() => import('./components/AddNoteModal.tsx'));
-const NotesListModal = lazy(() => import('./components/NotesListModal.tsx'));
-const WebsiteViewer = lazy(() => import('./components/WebsiteViewer.tsx'));
-const ScriptViewerModal = lazy(() => import('./components/ScriptViewerModal.tsx'));
-const AboutUs = lazy(() => import('./components/AboutUs.tsx'));
-const SupabaseReadiness = lazy(() => import('./components/SupabaseReadiness.tsx'));
-const ApiKeyModal = lazy(() => import('./components/ApiKeyModal.tsx'));
-const ApiKeyButton = lazy(() => import('./components/ApiKeyButton.tsx'));
+import AnalysisResult from './components/AnalysisResult.tsx';
+import InteractiveQuiz from './components/InteractiveQuiz.tsx';
+import DeleteConfirmationModal from './components/DeleteConfirmationModal.tsx';
+import { Footer as LazyFooter } from './components/Footer.tsx';
+import AddNoteModal from './components/AddNoteModal.tsx';
+import NotesListModal from './components/NotesListModal.tsx';
+import WebsiteViewer from './components/WebsiteViewer.tsx';
+import ScriptViewerModal from './components/ScriptViewerModal.tsx';
+import AboutUs from './components/AboutUs.tsx';
+import SupabaseReadiness from './components/SupabaseReadiness.tsx';
+import ApiKeyModal from './components/ApiKeyModal.tsx';
+import ApiKeyButton from './components/ApiKeyButton.tsx';
 
 
 /**

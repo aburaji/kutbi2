@@ -126,4 +126,21 @@ const ImageSelector: React.FC<SelectorProps> = ({
                                         </a>
                                     </div>
                                      <button onClick={() => onAnalyze(item)} disabled={true} className="w-full bg-slate-400 text-white font-semibold py-2.5 px-4 rounded-lg cursor-not-allowed flex justify-center items-center" data-tooltip="التحليل متاح للكتب والفيديوهات فقط حاليًا">
-                                        <svg
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                                        </svg>
+                                        <span className="mr-2">تحليل</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                }) : <div className="col-span-full text-center py-12 text-slate-500"><h3 className="text-xl font-semibold">لا توجد صور</h3><p className="mt-2">انقر على "إضافة صورة" لتبدأ.</p></div>}
+            </div>
+
+            {zoomedImage && (<div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 p-4" onClick={() => setZoomedImage(null)}><div className="relative max-w-[90vw] max-h-[90vh] flex" onClick={(e) => e.stopPropagation()}><img src={zoomedImage} alt="صورة مكبرة" className="object-contain rounded-lg shadow-2xl" /><button onClick={() => setZoomedImage(null)} className="absolute -top-3 -right-3 bg-white text-slate-800 rounded-full h-9 w-9 flex items-center justify-center text-2xl font-bold" aria-label="إغلاق">&times;</button></div></div>)}
+        </div>
+    );
+};
+
+export default ImageSelector;
