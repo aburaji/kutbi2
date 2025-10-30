@@ -2,6 +2,8 @@
 
 
 
+
+
 import React, { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react';
 import { analyzeTextContent, summarizeContent, createQuiz, generateBookDescription, extractBookTitle, analyzeSentiment, extractKeywords, translateToEnglish, translateToArabic, generateScriptFromInfo, generateVideoDescription, generateContentSuggestions, designArticleFromContent, rateContent } from './services/geminiService.ts';
 import { extractTextFromPdf, renderPdfFirstPageToDataUrl } from './services/pdfService.ts';
@@ -40,6 +42,7 @@ const ScriptViewerModal = lazy(() => import('./components/ScriptViewerModal.tsx'
 const AboutUs = lazy(() => import('./components/AboutUs.tsx'));
 const SupabaseReadiness = lazy(() => import('./components/SupabaseReadiness.tsx'));
 const ApiKeyModal = lazy(() => import('./components/ApiKeyModal.tsx'));
+const ApiKeyButton = lazy(() => import('./components/ApiKeyButton.tsx'));
 
 
 /**
@@ -1228,39 +1231,44 @@ setShowFollowUpActions(true);
                         )}
                     </>
                 )}
-                 <Suspense fallback={null}>
-                    {isApiKeyModalOpen && (
-                        <ApiKeyModal 
-                            onSave={handleSaveApiKey}
-                            onClose={() => setIsApiKeyModalOpen(false)} 
-                        />
-                    )}
-                    {isAddModalOpen && (
-                        <AddMediaModal 
-                            mediaType={mediaType}
-                            onClose={() => setIsAddModalOpen(false)}
-                            onAdd={handleAddMedia}
-                        />
-                    )}
-                    {itemToDelete && (
-                        <DeleteConfirmationModal
-                            bookTitle={itemToDelete.title}
-                            onConfirm={handleDeleteItem}
-                            onCancel={() => setItemToDelete(null)}
-                        />
-                    )}
-                    {isAddNoteModalOpen && (
-                        <AddNoteModal onClose={() => setIsAddNoteModalOpen(false)} onSave={handleAddNote} />
-                    )}
-                    {isNotesListModalOpen && (
-                        <NotesListModal notes={notes} onClose={() => setIsNotesListModalOpen(false)} onDelete={handleDeleteNote} />
-                    )}
-                    {scriptToView && (
-                        <ScriptViewerModal video={scriptToView} onClose={() => setScriptToView(null)} />
-                    )}
-                </Suspense>
-
             </main>
+
+            <Suspense fallback={null}>
+                <ApiKeyButton onOpen={() => setIsApiKeyModalOpen(true)} />
+            </Suspense>
+
+            <Suspense fallback={null}>
+                {isApiKeyModalOpen && (
+                    <ApiKeyModal 
+                        onSave={handleSaveApiKey}
+                        onClose={() => setIsApiKeyModalOpen(false)} 
+                    />
+                )}
+                {isAddModalOpen && (
+                    <AddMediaModal 
+                        mediaType={mediaType}
+                        onClose={() => setIsAddModalOpen(false)}
+                        onAdd={handleAddMedia}
+                    />
+                )}
+                {itemToDelete && (
+                    <DeleteConfirmationModal
+                        bookTitle={itemToDelete.title}
+                        onConfirm={handleDeleteItem}
+                        onCancel={() => setItemToDelete(null)}
+                    />
+                )}
+                {isAddNoteModalOpen && (
+                    <AddNoteModal onClose={() => setIsAddNoteModalOpen(false)} onSave={handleAddNote} />
+                )}
+                {isNotesListModalOpen && (
+                    <NotesListModal notes={notes} onClose={() => setIsNotesListModalOpen(false)} onDelete={handleDeleteNote} />
+                )}
+                {scriptToView && (
+                    <ScriptViewerModal video={scriptToView} onClose={() => setScriptToView(null)} />
+                )}
+            </Suspense>
+
             <Suspense fallback={null}>
                  {!currentView && !inAnalysisFlow && <LazyFooter />}
             </Suspense>

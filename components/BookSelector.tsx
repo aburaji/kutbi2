@@ -126,11 +126,10 @@ const BookSelector: React.FC<SelectorProps> = ({
         });
     };
 
-    // FIX: Explicitly cast the event's currentTarget to an HTML element to safely access its value, resolving a type inference issue.
     const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, bookId: string) => {
         if (e.key === 'Enter') {
-            // FIX: The explicit cast was causing a type inference issue. The event type provides enough information.
-            onSaveEdit(bookId, e.currentTarget.value);
+            // FIX: Add explicit cast to fix type error where e.currentTarget.value is 'unknown'.
+            onSaveEdit(bookId, (e.currentTarget as HTMLInputElement).value);
         } else if (e.key === 'Escape') {
             onStartEdit(null);
         }
@@ -139,8 +138,8 @@ const BookSelector: React.FC<SelectorProps> = ({
     const handleDescriptionKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>, bookId: string) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            // FIX: The explicit cast was causing a type inference issue. The event type provides enough information.
-            onSaveDescEdit(bookId, e.currentTarget.value);
+            // FIX: Add explicit cast to fix type error where e.currentTarget.value is 'unknown'.
+            onSaveDescEdit(bookId, (e.currentTarget as HTMLTextAreaElement).value);
         } else if (e.key === 'Escape') {
             onStartDescEdit(null);
         }
@@ -255,16 +254,16 @@ const BookSelector: React.FC<SelectorProps> = ({
                                 
                                 <div className="p-5 flex flex-col flex-grow">
                                      {editingId === book.id ? (
-                                        // FIX: Removed explicit cast on e.currentTarget.value. The event type provides enough information for TypeScript to infer the correct type.
-                                        <input type="text" defaultValue={book.title} onKeyDown={(e) => handleTitleKeyDown(e, book.id)} onBlur={(e) => onSaveEdit(book.id, e.currentTarget.value)} className="font-bold text-lg text-slate-800 bg-white border border-blue-400 rounded px-2 py-1 w-full mb-2" autoFocus />
+                                        // FIX: Add explicit cast to fix type error where e.currentTarget.value is 'unknown'.
+                                        <input type="text" defaultValue={book.title} onKeyDown={(e) => handleTitleKeyDown(e, book.id)} onBlur={(e) => onSaveEdit(book.id, (e.currentTarget as HTMLInputElement).value)} className="font-bold text-lg text-slate-800 bg-white border border-blue-400 rounded px-2 py-1 w-full mb-2" autoFocus />
                                     ) : (
                                         <h3 className="font-bold text-lg text-slate-800 group-hover:text-blue-600 transition-colors duration-300 mb-2 truncate" title={book.title}>{book.title}</h3>
                                     )}
         
                                     <div className="flex-grow min-h-[60px]">
                                          {editingDescId === book.id ? (
-                                            // FIX: Removed explicit cast on e.currentTarget.value. The event type provides enough information for TypeScript to infer the correct type.
-                                            <textarea defaultValue={book.description} onKeyDown={(e) => handleDescriptionKeyDown(e, book.id)} onBlur={(e) => onSaveDescEdit(book.id, e.currentTarget.value)} className="text-sm text-slate-600 bg-white border border-blue-400 rounded px-2 py-1 w-full" autoFocus rows={4} />
+                                            // FIX: Add explicit cast to fix type error where e.currentTarget.value is 'unknown'.
+                                            <textarea defaultValue={book.description} onKeyDown={(e) => handleDescriptionKeyDown(e, book.id)} onBlur={(e) => onSaveDescEdit(book.id, (e.currentTarget as HTMLTextAreaElement).value)} className="text-sm text-slate-600 bg-white border border-blue-400 rounded px-2 py-1 w-full" autoFocus rows={4} />
                                         ) : (
                                             <div className="flex items-start gap-1">
                                                 <p className="text-sm text-slate-600 line-clamp-2 flex-grow">{book.description}</p>
