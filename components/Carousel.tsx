@@ -36,11 +36,22 @@ const Carousel: React.FC<CarouselProps> = ({ items, onItemClick }) => {
     const isBook = 'imageUrl' in currentItem;
     const imageUrl = isBook ? (currentItem as Book).imageUrl : (currentItem as Video).thumbnailUrl;
 
+    const [imgSrc, setImgSrc] = useState(imageUrl);
+
+    useEffect(() => {
+        setImgSrc(imageUrl); // Reset image source when the current item changes
+    }, [imageUrl]);
+
 
     return (
         <div className="relative w-full aspect-[16/7] rounded-2xl shadow-lg border border-slate-200 overflow-hidden mb-6 bg-slate-800 group">
             <div className="absolute inset-0 w-full h-full bg-black bg-opacity-40 z-10"></div>
-            <img src={imageUrl} alt={currentItem.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <img 
+                src={imgSrc} 
+                alt={currentItem.title} 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                onError={() => setImgSrc('https://images.unsplash.com/photo-1589998059171-988d887df646?q=80&w=1200&auto=format&fit=crop')}
+            />
             
             <div className="relative z-20 h-full flex flex-col justify-end p-6 md:p-8 text-white">
                 <span className={`text-xs font-bold px-3 py-1 rounded-full mb-2 inline-block self-start ${isBook ? 'bg-blue-500' : 'bg-purple-500'}`}>
