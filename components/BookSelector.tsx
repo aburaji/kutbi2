@@ -253,14 +253,16 @@ const BookSelector: React.FC<SelectorProps> = ({
                                 
                                 <div className="p-5 flex flex-col flex-grow">
                                      {editingId === book.id ? (
-                                        <input type="text" defaultValue={book.title} onKeyDown={(e) => handleTitleKeyDown(e, book.id)} onBlur={(e) => onSaveEdit(book.id, (e.currentTarget as any).value)} className="font-bold text-lg text-slate-800 bg-white border border-blue-400 rounded px-2 py-1 w-full mb-2" autoFocus />
+                                        // FIX: Explicitly cast event target to HTMLInputElement to fix TypeScript error.
+                                        <input type="text" defaultValue={book.title} onKeyDown={(e) => handleTitleKeyDown(e, book.id)} onBlur={(e) => onSaveEdit(book.id, (e.currentTarget as HTMLInputElement).value)} className="font-bold text-lg text-slate-800 bg-white border border-blue-400 rounded px-2 py-1 w-full mb-2" autoFocus />
                                     ) : (
                                         <h3 className="font-bold text-lg text-slate-800 group-hover:text-blue-600 transition-colors duration-300 mb-2 truncate" title={book.title}>{book.title}</h3>
                                     )}
         
                                     <div className="flex-grow min-h-[60px]">
                                          {editingDescId === book.id ? (
-                                            <textarea defaultValue={book.description} onKeyDown={(e) => handleDescriptionKeyDown(e, book.id)} onBlur={(e) => onSaveDescEdit(book.id, (e.currentTarget as any).value)} className="text-sm text-slate-600 bg-white border border-blue-400 rounded px-2 py-1 w-full" autoFocus rows={4} />
+                                            // FIX: Explicitly cast event target to HTMLTextAreaElement for type safety and consistency.
+                                            <textarea defaultValue={book.description} onKeyDown={(e) => handleDescriptionKeyDown(e, book.id)} onBlur={(e) => onSaveDescEdit(book.id, (e.currentTarget as HTMLTextAreaElement).value)} className="text-sm text-slate-600 bg-white border border-blue-400 rounded px-2 py-1 w-full" autoFocus rows={4} />
                                         ) : (
                                             <div className="flex items-start gap-1">
                                                 <p className="text-sm text-slate-600 line-clamp-2 flex-grow">{book.description}</p>
