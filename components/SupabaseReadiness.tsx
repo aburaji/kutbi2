@@ -14,27 +14,12 @@ const ReadinessCheckItem: React.FC<{ title: string; description: string; }> = ({
     </div>
 );
 
-const WarningCheckItem: React.FC<{ title: string; description: string; }> = ({ title, description }) => (
-    <div className="flex items-start gap-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-        <div className="flex-shrink-0 w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center mt-1">
-            <svg className="w-4 h-4 text-yellow-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.21 3.03-1.742 3.03H4.42c-1.532 0-2.492-1.696-1.742-3.03l5.58-9.92zM10 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-        </div>
-        <div>
-            <h4 className="font-semibold text-slate-800">{title}</h4>
-            <p className="text-sm text-slate-600">{description}</p>
-        </div>
-    </div>
-);
-
-
 const SupabaseReadiness: React.FC = () => {
     return (
         <div className="p-6 bg-white rounded-2xl shadow-lg border border-slate-200">
             <div className="text-center mb-8">
                 <h2 className="text-2xl font-bold text-slate-800">هل التطبيق جاهز لرفعه على Supabase؟</h2>
-                <p className="mt-2 text-lg font-bold text-green-600">نعم، التطبيق جاهز مع ملاحظة هامة!</p>
+                <p className="mt-2 text-lg font-bold text-green-600">نعم، التطبيق جاهز بالكامل!</p>
             </div>
             
             <div className="space-y-6 max-w-2xl mx-auto">
@@ -57,9 +42,9 @@ const SupabaseReadiness: React.FC = () => {
                     description="البيانات التي يضيفها المستخدم (مثل الكتب والملاحظات) تُحفظ محليًا في متصفح المستخدم باستخدام IndexedDB. هذا يعني عدم الحاجة إلى قاعدة بيانات على الخادم."
                 />
                 
-                <WarningCheckItem
-                    title="ملاحظة هامة: مفتاح Gemini API"
-                    description="يعتمد التطبيق على متغير بيئة `process.env.API_KEY` لجلب مفتاح Gemini API. استضافة Supabase للمواقع الثابتة لا تدعم حقن متغيرات البيئة مباشرة في ملفات JavaScript. يجب عليك توفير هذا المتغير للتطبيق. الطريقة الموصى بها هي استخدام Supabase Edge Function كـ 'بروكسي' آمن لإجراء استدعاءات Gemini API."
+                <ReadinessCheckItem
+                    title="إدارة مفتاح API من جانب العميل"
+                    description="يعتمد التطبيق على مفتاح Gemini API الذي يقدمه المستخدم ويتم تخزينه محليًا في متصفحك فقط. لا توجد حاجة لمتغيرات بيئة على الخادم، مما يجعل النشر على Supabase مباشرًا وآمنًا."
                 />
             </div>
 
@@ -72,7 +57,6 @@ const SupabaseReadiness: React.FC = () => {
                     <li>اترك "Base directory" فارغًا (أو اضبطه حسب هيكل مستودعك).</li>
                     <li>لا حاجة لـ "Build command" لأن التطبيق لا يتطلب خطوة بناء.</li>
                     <li>انشر الموقع!</li>
-                    <li><strong>(مهم)</strong> قم بإنشاء Supabase Edge Function للتعامل مع `API_KEY` وتمرير الطلبات إلى Gemini API بشكل آمن.</li>
                 </ol>
             </div>
         </div>
