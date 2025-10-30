@@ -136,10 +136,10 @@ const BookSelector: React.FC<SelectorProps> = ({
     };
 
     const handleDescriptionKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>, bookId: string) => {
+        // FIX: The error "Argument of type 'unknown' is not assignable to parameter of type 'string'" can occur when using e.target.
+        // Using e.currentTarget ensures the event is correctly typed to the element the handler is attached to, making .value a string.
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            // FIX: The original error was 'Argument of type 'unknown' is not assignable to parameter of type 'string''.
-            // Use e.currentTarget instead of e.target to ensure correct typing.
             onSaveDescEdit(bookId, e.currentTarget.value);
         } else if (e.key === 'Escape') {
             onStartDescEdit(null);
