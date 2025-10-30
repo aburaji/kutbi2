@@ -1,0 +1,70 @@
+/* Custom Tooltip Styles */
+[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+}
+[data-tooltip]::after,
+[data-tooltip]::before {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 100;
+}
+/* Tooltip body */
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background-color: #1f2937; /* Tailwind slate-800 */
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  margin-bottom: 8px;
+}
+/* Tooltip arrow */
+[data-tooltip]::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  border: 6px solid transparent;
+  border-top-color: #1f2937; /* Tailwind slate-800 */
+  margin-bottom: -4px;
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.shadow-text {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Animation for image placeholders */
+@keyframes pulse {
+  50% {
+    opacity: .5;
+  }
+}
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+/* Indeterminate progress bar animation */
+@keyframes indeterminate-progress {
+  0% { transform: translateX(-100%) scaleX(0.5); }
+  100% { transform: translateX(100%) scaleX(0.5); }
+}
+.animate-indeterminate-progress {
+  transform-origin: left;
+  animation: indeterminate-progress 1.5s ease-in-out infinite;
+}
