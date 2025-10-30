@@ -129,7 +129,8 @@ const BookSelector: React.FC<SelectorProps> = ({
     // FIX: Explicitly cast the event's currentTarget to an HTML element to safely access its value, resolving a type inference issue.
     const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, bookId: string) => {
         if (e.key === 'Enter') {
-            onSaveEdit(bookId, (e.currentTarget as HTMLInputElement).value);
+            // FIX: The explicit cast was causing a type inference issue. The event type provides enough information.
+            onSaveEdit(bookId, e.currentTarget.value);
         } else if (e.key === 'Escape') {
             onStartEdit(null);
         }
@@ -138,7 +139,8 @@ const BookSelector: React.FC<SelectorProps> = ({
     const handleDescriptionKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>, bookId: string) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            onSaveDescEdit(bookId, (e.currentTarget as HTMLTextAreaElement).value);
+            // FIX: The explicit cast was causing a type inference issue. The event type provides enough information.
+            onSaveDescEdit(bookId, e.currentTarget.value);
         } else if (e.key === 'Escape') {
             onStartDescEdit(null);
         }
