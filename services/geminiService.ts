@@ -8,7 +8,7 @@ let ai: GoogleGenAI | null = null;
  * Lazily initializes and returns the GoogleGenAI instance.
  * This function is called by all other exported functions in this service,
  * ensuring the AI client is only created when first needed.
- * For local development, it falls back to using a key from localStorage.
+ * It exclusively uses a key from localStorage, as expected in this client-side app.
  * @returns The initialized GoogleGenAI instance.
  * @throws An error if the API key is missing or initialization fails.
  */
@@ -20,27 +20,15 @@ const getAiInstance = (): GoogleGenAI => {
 
     let apiKey: string | null = null;
     
-    // 1. Try to get the API key from the environment (for deployed environments)
+    // Get the API key from localStorage. This is the only supported method in this client-side setup.
     try {
-        if (typeof process !== 'undefined' && typeof process.env === 'object' && process.env !== null && typeof process.env.API_KEY === 'string' && process.env.API_KEY) {
-            apiKey = process.env.API_KEY;
-        }
+        apiKey = localStorage.getItem('gemini_api_key');
     } catch (e) {
-        console.warn("Could not access process.env.API_KEY", e);
-    }
-    
-    // 2. If no environment key, try getting it from localStorage (for local development)
-    if (!apiKey) {
-        try {
-            apiKey = localStorage.getItem('gemini_api_key');
-        } catch (e) {
-             console.warn("Could not access localStorage", e);
-        }
+         console.warn("Could not access localStorage", e);
     }
 
-    // 3. If no key is found from any source, throw a specific error for the UI to handle.
+    // If no key is found, throw a specific error for the UI to handle.
     if (!apiKey) {
-        console.warn("API key not found in process.env or localStorage.");
         throw new Error("API_KEY_MISSING");
     }
 
